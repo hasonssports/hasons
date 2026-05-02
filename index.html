@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>H.A & Sons - Premium Sports Goods</title>
+    <style>
+        /* --- CSS VARIABLES & RESET --- */
+        :root {
+            --primary-color: #008f39; /* Pakistan Green */
+            --secondary-color: #1a1a1a;
+            --accent-color: #ffcc00; /* Gold/Yellow for CTAs */
+            --bg-light: #f4f4f4;
+            --text-dark: #333;
+            --text-light: #fff;
+            --shadow: 0 4px 6px rgba(0,0,0,0.1);
+            --radius: 8px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding-bottom: 80px;
+        }
+
+        /* --- NAVIGATION --- */
+        header {
+            background-color: var(--secondary-color);
+            color: var(--text-light);
+            padding: 1rem 5%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: var(--text-light);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .logo span {
+            color: var(--accent-color);
+        }
+
+        /* --- VIEWS MANAGEMENT --- */
+        /* We hide/show these to simulate "pages" */
+        .view-section {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- HERO SECTION (Only on Home) --- */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://picsum.photos/seed/sportshero/1920/800') no-repeat center center/cover;
+            height: 50vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 0 20px;
+        }
+
+        .hero h1 { font-size: 3rem; margin-bottom: 1rem; text-transform: uppercase; }
+        .hero p { font-size: 1.2rem; max-width: 600px; margin-bottom: 2rem; }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-weight: bold;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary { background-color: var(--primary-color); color: white; }
+        .btn-primary:hover { background-color: #006b2a; }
+        .btn-secondary { background-color: #555; color: white; }
+        .btn-secondary:hover { background-color: #333; }
+
+        /* --- CATEGORY SECTIONS (Home View) --- */
+        .section-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 20px;
+        }
+
+        .section-header {
+            position: relative;
+            margin-bottom: 2rem;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            height: 200px;
+            cursor: pointer; /* Indicates clickability */
+            transition: var(--transition);
+        }
+
+        .section-header:hover {
+            transform: scale(1.01);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        }
+
+        .section-header img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* Brightness filter to ensure text is readable */
+            filter: brightness(0.85); 
+            transition: var(--transition);
+        }
+
+        .section-header:hover img {
+            filter: brightness(0.6);
+        }
+
+        .section-title {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            font-weight: 800;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            pointer-events: none; /* Let clicks pass through to the header div */
+            z-index: 2;
+        }
+
+        /* --- CATEGORY PAGE (Detail View) --- */
+        .category-page-header {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .category-page-header h1 {
+            font-size: 2rem;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1.5rem;
+            padding: 0 20px;
+            max-width: 1200px;
+            margin: 0 auto 4rem auto;
+        }
+
+        .product-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border: 1px solid #eee;
+            transition: var(--transition);
+        }
+
+        .product-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-5px);
+        }
+
+        .product-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+
+        .add-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.95rem;
+        }
+
+        .add-btn:hover {
+            background-color: var(--primary-color);
+        }
+
+        .back-nav {
+            margin: 20px 5%;
+        }
+
+        /* --- MODALS & FLOATING UI --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--radius);
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #888;
+        }
+
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; }
+        .form-group input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem; }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item-remove { color: red; cursor: pointer; border: none; background: none; }
+
+        .floating-cart {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            cursor: pointer;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cart-count {
+            background-color: var(--accent-color);
+            color: var(--secondary-color);
+            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 50%;
+            font-size: 0.9rem;
+        }
+
+        .toast {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            z-index: 3000;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: var(--transition);
+        }
+
+        .toast.show { opacity: 1; transform: translateY(0); }
+
+        footer {
+            background-color: #111;
+            color: #777;
+            text-align: center;
+            padding: 2rem 1rem 5rem 1rem; /* Extra padding bottom for mobile cart */
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- USER DETAILS MODAL -->
+    <div class="modal-overlay" id="userModal">
+        <div class="modal-content">
+            <h2>Welcome to H.A & Sons</h2>
+            <p>Please enter your details to start shopping.</p>
+            <br>
+            <form id="userForm">
+                <div class="form-group">
+                    <label for="userName">Your Name</label>
+                    <input type="text" id="userName" placeholder="e.g. Ahmed Khan" required>
+                </div>
+                <div class="form-group">
+                    <label for="userPhone">Your Phone Number</label>
+                    <input type="tel" id="userPhone" placeholder="e.g. 03001234567" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Start Shopping</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- CART MODAL -->
+    <div class="modal-overlay" id="cartModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeCart">&times;</span>
+            <h2>Your Order</h2>
+            <div id="cartItemsContainer">
+                <p style="color: #777; text-align: center; margin-top: 20px;">Your cart is empty.</p>
+            </div>
+            <div class="cart-total-section" id="cartFooter" style="display: none; margin-top:20px; text-align:right;">
+                <p>Total Items: <span id="totalItems">0</span></p>
+                <button class="btn btn-primary" style="width: 100%; margin-top: 15px;" onclick="checkout()">
+                    Order via WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast">Item added to cart!</div>
+
+    <!-- HEADER (Shared) -->
+    <header>
+        <a href="#" class="logo" onclick="showHome()">H.A <span>& Sons</span></a>
+    </header>
+
+    <!-- VIEW: HOME (Sections Grid) -->
+    <main id="view-home" class="view-section">
+        <section class="hero">
+            <h1>Premium Sports Goods in Karachi</h1>
+            <p>Click on a category to see all accessories.</p>
+        </section>
+
+        <!-- CRICKET SECTION -->
+        <section class="section-container">
+            <div class="section-header" onclick="openCategory('cricket')">
+                <!-- SPECIFIC CRICKET IMAGE PROVIDED BY USER -->
+                <img src="images/Cricket.png" alt="Cricket Goods">
+                <h2 class="section-title">Cricket</h2>
+            </div>
+        </section>
+
+        <!-- FOOTBALL SECTION -->
+        <section class="section-container">
+            <div class="section-header" onclick="openCategory('football')">
+                <!-- REPLACE URL BELOW WITH YOUR Football.jpg FILE URL -->
+                <img src="images/Football.png" alt="Football Goods">
+                <h2 class="section-title">Football</h2>
+            </div>
+        </section>
+
+        <!-- BADMINTON SECTION -->
+        <section class="section-container">
+            <div class="section-header" onclick="openCategory('badminton')">
+                <!-- REPLACE URL BELOW WITH YOUR Badminton.jpg FILE URL -->
+                <img src="images/Badminton.png" alt="Badminton Goods">
+                <h2 class="section-title">Badminton</h2>
+            </div>
+        </section>
+
+        <!-- TENNIS SECTION -->
+        <section class="section-container">
+            <div class="section-header" onclick="openCategory('tennis')">
+                <!-- REPLACE URL BELOW WITH YOUR Tennis.jpg FILE URL -->
+                <img src="images/Tennis.png" alt="Tennis Goods">
+                <h2 class="section-title">Tennis</h2>
+            </div>
+        </section>
+
+        <!-- SWIMMING SECTION -->
+        <section class="section-container">
+            <div class="section-header" onclick="openCategory('swimming')">
+                <!-- REPLACE URL BELOW WITH YOUR Swimming.jpg FILE URL -->
+                <img src="images/Swimming.png" alt="Swimming Goods">
+                <h2 class="section-title">Swimming</h2>
+            </div>
+        </section>
+
+        <!-- BOXING SECTION -->
+        <section class="section-container">
+            <div class="section-header" onclick="openCategory('boxing')">
+                <!-- REPLACE URL BELOW WITH YOUR Boxing.jpg FILE URL -->
+                <img src="images/Boxing.jpeg" alt="Boxing Goods">
+                <h2 class="section-title">Boxing</h2>
+            </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2026 H.A & Sons. All rights reserved. Karachi, Pakistan.</p>
+        </footer>
+    </main>
+
+    <!-- VIEW: CATEGORY DETAILS (Hidden by default) -->
+    <main id="view-category" class="view-section hidden">
+        <div class="back-nav">
+            <button class="btn btn-secondary" onclick="showHome()"> &larr; Back to Categories</button>
+        </div>
+
+        <header class="category-page-header">
+            <h1 id="cat-page-title">Category Name</h1>
+            <p>Select items below to add to your cart.</p>
+        </header>
+
+        <div class="products-grid" id="category-grid">
+            <!-- Items injected by JS -->
+        </div>
+
+        <footer>
+            <p>&copy; 2026 H.A & Sons. All rights reserved. Karachi, Pakistan.</p>
+        </footer>
+    </main>
+
+    <!-- FLOATING CART BUTTON -->
+    <div class="floating-cart" onclick="openCart()">
+        <span>Cart</span>
+        <span class="cart-count" id="cartCount">0</span>
+    </div>
+
+        <script>
+        // --- DATA ---
+        const sportsData = {
+            cricket: {
+                title: "Cricket Goods",
+                items: [
+                    { name: "Tape Ball Bat", price: 2500 },
+                    { name: "Leather Ball Bat", price: 8500 },
+                    { name: "Hard Ball Bat", price: 7000 },
+                    { name: "Tennis Ball Bat", price: 3000 },
+                    { name: "Leather Ball", price: 1200 },
+                    { name: "Tennis Ball", price: 150 },
+                    { name: "Batting Pads", price: 3500 },
+                    { name: "Wicket Keeping Gloves", price: 2500 },
+                    { name: "Helmet", price: 4000 },
+                    { name: "Abdominal Guard", price: 500 },
+                    { name: "Thigh Pads", price: 1500 },
+                    { name: "Cricket Shoes", price: 4500 },
+                    { name: "Cricket Kit Bag", price: 5500 },
+                    { name: "Stumps", price: 1000 },
+                    { name: "Bails", price: 200 }
+                ]
+            },
+            football: {
+                title: "Football Goods",
+                items: [
+                    { name: "Football (Size 5)", price: 3000 },
+                    { name: "Studs/Cleats", price: 5500 },
+                    { name: "Shin Guards", price: 800 },
+                    { name: "Goalkeeper Gloves", price: 2200 },
+                    { name: "Football Jersey", price: 1200 },
+                    { name: "Football Socks", price: 400 },
+                    { name: "Training Cones", price: 600 },
+                    { name: "Pump", price: 500 }
+                ]
+            },
+            badminton: {
+                title: "Badminton Goods",
+                items: [
+                    { name: "Carbon Fiber Racket", price: 6000 },
+                    { name: "Nylon Shuttlecock", price: 800 },
+                    { name: "Feather Shuttlecock", price: 1500 },
+                    { name: "Grip Tape", price: 200 },
+                    { name: "Badminton Bag", price: 2500 },
+                    { name: "Net (Portable)", price: 3500 }
+                ]
+            },
+            tennis: {
+                title: "Tennis Goods",
+                items: [
+                    { name: "Tennis Racket", price: 7500 },
+                    { name: "Tennis Balls (3 Pack)", price: 1000 },
+                    { name: "Headband", price: 300 },
+                    { name: "Wristbands", price: 200 },
+                    { name: "Tennis Bag", price: 4000 },
+                    { name: "Vibration Dampener", price: 150 }
+                ]
+            },
+            swimming: {
+                title: "Swimming Goods",
+                items: [
+                    { name: "Swimming Goggles", price: 1200 },
+                    { name: "Silicon Cap", price: 600 },
+                    { name: "Swimming Trunks", price: 1800 },
+                    { name: "Swimming Costume", price: 2500 },
+                    { name: "Float Board", price: 1500 },
+                    { name: "Ear Plugs", price: 300 },
+                    { name: "Nose Clip", price: 200 }
+                ]
+            },
+            boxing: {
+                title: "Boxing Goods",
+                items: [
+                    { name: "Boxing Gloves (12oz)", price: 3500 },
+                    { name: "Boxing Gloves (16oz)", price: 4000 },
+                    { name: "Focus Pads", price: 2500 },
+                    { name: "Mouth Guard", price: 500 },
+                    { name: "Hand Wraps", price: 600 },
+                    { name: "Punching Bag", price: 6500 },
+                    { name: "Boxing Headgear", price: 4000 },
+                    { name: "Skipping Rope", price: 800 }
+                ]
+            }
+        };
+
+        // --- STATE ---
+        let userData = { name: "", phone: "" };
+        let cart = [];
+
+        // --- DOM ELEMENTS ---
+        const userModal = document.getElementById('userModal');
+        const userForm = document.getElementById('userForm');
+        const cartModal = document.getElementById('cartModal');
+        const viewHome = document.getElementById('view-home');
+        const viewCategory = document.getElementById('view-category');
+        const catGrid = document.getElementById('category-grid');
+        const catTitle = document.getElementById('cat-page-title');
+        const cartCountEl = document.getElementById('cartCount');
+
+        // --- INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const storedName = sessionStorage.getItem('haUserName');
+            const storedPhone = sessionStorage.getItem('haUserPhone');
+
+            if (storedName && storedPhone) {
+                userData.name = storedName;
+                userData.phone = storedPhone;
+                userModal.style.display = 'none';
+            } else {
+                userModal.style.display = 'flex';
+            }
+        });
+
+        // --- NAVIGATION / VIEWS ---
+        function showHome() {
+            viewHome.classList.remove('hidden');
+            viewCategory.classList.add('hidden');
+            window.scrollTo(0, 0);
+        }
+
+        function openCategory(categoryKey) {
+            const data = sportsData[categoryKey];
+            if (!data) return;
+
+            catTitle.textContent = data.title;
+            catGrid.innerHTML = '';
+
+            data.items.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <div class="product-name">${item.name}</div>
+                    <button class="add-btn" onclick="addToCart('${item.name}', ${item.price})">
+                        Add to Cart
+                    </button>
+                `;
+                catGrid.appendChild(card);
+            });
+
+            viewHome.classList.add('hidden');
+            viewCategory.classList.remove('hidden');
+            window.scrollTo(0, 0);
+        }
+
+        // --- USER FORM ---
+        userForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const nameInput = document.getElementById('userName').value.trim();
+            const phoneInput = document.getElementById('userPhone').value.trim();
+
+            if (nameInput && phoneInput) {
+                userData.name = nameInput;
+                userData.phone = phoneInput;
+                sessionStorage.setItem('haUserName', nameInput);
+                sessionStorage.setItem('haUserPhone', phoneInput);
+                userModal.style.display = 'none';
+            }
+        });
+
+        // --- CART & INSTANT NOTIFICATION LOGIC ---
+        function addToCart(itemName, itemPrice) {
+            // 1. Validate User Data
+            if (!userData.name || !userData.phone) {
+                userModal.style.display = 'flex';
+                return;
+            }
+
+            // 2. Update Cart (Visual only)
+            cart.push({ name: itemName, price: itemPrice });
+            updateCartUI();
+            
+            // 3. Prepare Instant WhatsApp Message
+            // This message will come from the user's WhatsApp number
+            const phoneNumber = "923301452863"; // YOUR STORE NUMBER
+            
+            let message = `*New Customer Interest Notification*%0A%0A`;
+            message += `*Customer Name:* ${userData.name}%0A`;
+            message += `*Customer Phone:* ${userData.phone}%0A`; // Including the number they typed
+            message += `-----------------------%0A`;
+            message += `*Item Added:* ${itemName}%0A`;
+            message += `*Status:* Waiting for confirmation/payment details.`;
+
+            // 4. Open WhatsApp Immediately
+            const whatsappURL = `https://wa.me/${phoneNumber}?text=${message}`;
+            window.open(whatsappURL, '_blank');
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            cartCountEl.textContent = cart.length;
+            const container = document.getElementById('cartItemsContainer');
+            const footer = document.getElementById('cartFooter');
+
+            if (cart.length === 0) {
+                container.innerHTML = '<p style="color: #777; text-align: center; margin-top: 20px;">Your cart is empty.</p>';
+                footer.style.display = 'none';
+            } else {
+                let html = '';
+                cart.forEach((item, index) => {
+                    html += `
+                        <div class="cart-item">
+                            <span>${item.name}</span>
+                            <button class="cart-item-remove" onclick="removeFromCart(${index})">Remove</button>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+                footer.style.display = 'block';
+                document.getElementById('totalItems').textContent = cart.length;
+            }
+        }
+
+        // --- MODALS ---
+        function showToast() {
+            // Optional: We can disable the small toast popup since WhatsApp is opening anyway
+            // const t = document.getElementById('toast');
+            // t.classList.add('show');
+            // setTimeout(() => t.classList.remove('show'), 2000);
+        }
+
+        function openCart() {
+            cartModal.style.display = 'flex';
+        }
+
+        document.getElementById('closeCart').addEventListener('click', () => {
+            cartModal.style.display = 'none';
+        });
+
+        window.onclick = function(event) {
+            if (event.target == cartModal) cartModal.style.display = 'none';
+        }
+
+        function checkout() {
+            if (cart.length === 0) return;
+
+            const phoneNumber = "923001234567";
+            const totalInternalPrice = cart.reduce((sum, item) => sum + item.price, 0);
+            
+            let message = `*Final Order from H.A & Sons Website*%0A%0A`;
+            message += `*Customer Details:*%0A`;
+            message += `Name: ${userData.name}%0A`;
+            message += `Contact: ${userData.phone}%0A`;
+            message += `-----------------------%0A`;
+            message += `*Order Items:*%0A`;
+            
+            cart.forEach(item => {
+                message += `- ${item.name}%0A`;
+            });
+
+            message += `-----------------------%0A`;
+            if (totalInternalPrice > 5000) {
+                message += `*Status: Eligible for FREE DELIVERY!* (Order Value > 5000)`;
+            } else {
+                message += `*Status: Standard Delivery Charges Apply*`;
+            }
+
+            window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
+        }
+    </script>
+</body>
+</html>
