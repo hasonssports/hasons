@@ -327,26 +327,6 @@
 </head>
 <body>
 
-    <!-- USER DETAILS MODAL -->
-    <div class="modal-overlay" id="userModal">
-        <div class="modal-content">
-            <h2>Welcome to H.A & Sons</h2>
-            <p>Please enter your details to start shopping.</p>
-            <br>
-            <form id="userForm">
-                <div class="form-group">
-                    <label for="userName">Your Name</label>
-                    <input type="text" id="userName" placeholder="e.g. Ahmed Khan" required>
-                </div>
-                <div class="form-group">
-                    <label for="userPhone">Your Phone Number</label>
-                    <input type="tel" id="userPhone" placeholder="e.g. 03001234567" required>
-                </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%;">Start Shopping</button>
-            </form>
-        </div>
-    </div>
-
     <!-- CART MODAL -->
     <div class="modal-overlay" id="cartModal">
         <div class="modal-content">
@@ -383,7 +363,7 @@
         <section class="section-container">
             <div class="section-header" onclick="openCategory('cricket')">
                 <!-- SPECIFIC CRICKET IMAGE PROVIDED BY USER -->
-                <img src="images/Cricket.png" alt="Cricket Goods">
+                <img src="images/Cricket.png" alt="Cricket Goods" onerror="this.src='https://picsum.photos/seed/cricket/800/200'">
                 <h2 class="section-title">Cricket</h2>
             </div>
         </section>
@@ -391,8 +371,7 @@
         <!-- FOOTBALL SECTION -->
         <section class="section-container">
             <div class="section-header" onclick="openCategory('football')">
-                <!-- REPLACE URL BELOW WITH YOUR Football.jpg FILE URL -->
-                <img src="images/Football.png" alt="Football Goods">
+                <img src="images/Football.png" alt="Football Goods" onerror="this.src='https://picsum.photos/seed/football/800/200'">
                 <h2 class="section-title">Football</h2>
             </div>
         </section>
@@ -400,8 +379,7 @@
         <!-- BADMINTON SECTION -->
         <section class="section-container">
             <div class="section-header" onclick="openCategory('badminton')">
-                <!-- REPLACE URL BELOW WITH YOUR Badminton.jpg FILE URL -->
-                <img src="images/Badminton.png" alt="Badminton Goods">
+                <img src="images/Badminton.png" alt="Badminton Goods" onerror="this.src='https://picsum.photos/seed/badminton/800/200'">
                 <h2 class="section-title">Badminton</h2>
             </div>
         </section>
@@ -409,8 +387,7 @@
         <!-- TENNIS SECTION -->
         <section class="section-container">
             <div class="section-header" onclick="openCategory('tennis')">
-                <!-- REPLACE URL BELOW WITH YOUR Tennis.jpg FILE URL -->
-                <img src="images/Tennis.png" alt="Tennis Goods">
+                <img src="images/Tennis.png" alt="Tennis Goods" onerror="this.src='https://picsum.photos/seed/tennis/800/200'">
                 <h2 class="section-title">Tennis</h2>
             </div>
         </section>
@@ -418,8 +395,7 @@
         <!-- SWIMMING SECTION -->
         <section class="section-container">
             <div class="section-header" onclick="openCategory('swimming')">
-                <!-- REPLACE URL BELOW WITH YOUR Swimming.jpg FILE URL -->
-                <img src="images/Swimming.png" alt="Swimming Goods">
+                <img src="images/Swimming.png" alt="Swimming Goods" onerror="this.src='https://picsum.photos/seed/swimming/800/200'">
                 <h2 class="section-title">Swimming</h2>
             </div>
         </section>
@@ -427,9 +403,16 @@
         <!-- BOXING SECTION -->
         <section class="section-container">
             <div class="section-header" onclick="openCategory('boxing')">
-                <!-- REPLACE URL BELOW WITH YOUR Boxing.jpg FILE URL -->
-                <img src="images/Boxing.jpeg" alt="Boxing Goods">
+                <img src="images/Boxing.jpeg" alt="Boxing Goods" onerror="this.src='https://picsum.photos/seed/boxing/800/200'">
                 <h2 class="section-title">Boxing</h2>
+            </div>
+        </section>
+
+        <!-- GYM SECTION (NEWLY ADDED) -->
+        <section class="section-container">
+            <div class="section-header" onclick="openCategory('gym')">
+                <img src="images/Gym.png" alt="Gym Goods" onerror="this.src='https://picsum.photos/seed/gym/800/200'">
+                <h2 class="section-title">Gym</h2>
             </div>
         </section>
 
@@ -546,16 +529,29 @@
                     { name: "Boxing Headgear", price: 4000 },
                     { name: "Skipping Rope", price: 800 }
                 ]
+            },
+            gym: {
+                title: "Gym & Fitness",
+                items: [
+                    { name: "Dumbbells (Pair)", price: 3500 },
+                    { name: "Hand Gripper", price: 500 },
+                    { name: "Pull Up Bar", price: 1800 },
+                    { name: "Push Up Bars", price: 1200 },
+                    { name: "Yoga Mat", price: 1500 },
+                    { name: "Gym Gloves", price: 1000 },
+                    { name: "Kettlebell", price: 4000 },
+                    { name: "Resistance Bands", price: 800 },
+                    { name: "Weightlifting Belt", price: 2500 },
+                    { name: "Skipping Rope (Speed)", price: 700 },
+                    { name: "Ab Wheel Roller", price: 1100 }
+                ]
             }
         };
 
         // --- STATE ---
-        let userData = { name: "", phone: "" };
         let cart = [];
 
         // --- DOM ELEMENTS ---
-        const userModal = document.getElementById('userModal');
-        const userForm = document.getElementById('userForm');
         const cartModal = document.getElementById('cartModal');
         const viewHome = document.getElementById('view-home');
         const viewCategory = document.getElementById('view-category');
@@ -565,16 +561,7 @@
 
         // --- INITIALIZATION ---
         document.addEventListener('DOMContentLoaded', () => {
-            const storedName = sessionStorage.getItem('haUserName');
-            const storedPhone = sessionStorage.getItem('haUserPhone');
-
-            if (storedName && storedPhone) {
-                userData.name = storedName;
-                userData.phone = storedPhone;
-                userModal.style.display = 'none';
-            } else {
-                userModal.style.display = 'flex';
-            }
+            // No longer showing user modal on start
         });
 
         // --- NAVIGATION / VIEWS ---
@@ -608,47 +595,14 @@
             window.scrollTo(0, 0);
         }
 
-        // --- USER FORM ---
-        userForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const nameInput = document.getElementById('userName').value.trim();
-            const phoneInput = document.getElementById('userPhone').value.trim();
-
-            if (nameInput && phoneInput) {
-                userData.name = nameInput;
-                userData.phone = phoneInput;
-                sessionStorage.setItem('haUserName', nameInput);
-                sessionStorage.setItem('haUserPhone', phoneInput);
-                userModal.style.display = 'none';
-            }
-        });
-
         // --- CART & INSTANT NOTIFICATION LOGIC ---
         function addToCart(itemName, itemPrice) {
-            // 1. Validate User Data
-            if (!userData.name || !userData.phone) {
-                userModal.style.display = 'flex';
-                return;
-            }
-
-            // 2. Update Cart (Visual only)
+            // 1. Update Cart
             cart.push({ name: itemName, price: itemPrice });
             updateCartUI();
             
-            // 3. Prepare Instant WhatsApp Message
-            // This message will come from the user's WhatsApp number
-            const phoneNumber = "923301452863"; // YOUR STORE NUMBER
-            
-            let message = `*New Customer Interest Notification*%0A%0A`;
-            message += `*Customer Name:* ${userData.name}%0A`;
-            message += `*Customer Phone:* ${userData.phone}%0A`; // Including the number they typed
-            message += `-----------------------%0A`;
-            message += `*Item Added:* ${itemName}%0A`;
-            message += `*Status:* Waiting for confirmation/payment details.`;
-
-            // 4. Open WhatsApp Immediately
-            const whatsappURL = `https://wa.me/${phoneNumber}?text=${message}`;
-            window.open(whatsappURL, '_blank');
+            // 2. Show Toast Notification (Visual feedback instead of WhatsApp on every click)
+            showToast();
         }
 
         function removeFromCart(index) {
@@ -682,10 +636,9 @@
 
         // --- MODALS ---
         function showToast() {
-            // Optional: We can disable the small toast popup since WhatsApp is opening anyway
-            // const t = document.getElementById('toast');
-            // t.classList.add('show');
-            // setTimeout(() => t.classList.remove('show'), 2000);
+            const t = document.getElementById('toast');
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 2000);
         }
 
         function openCart() {
@@ -703,13 +656,13 @@
         function checkout() {
             if (cart.length === 0) return;
 
-            const phoneNumber = "923001234567";
-            const totalInternalPrice = cart.reduce((sum, item) => sum + item.price, 0);
+            const phoneNumber = "923001234567"; // YOUR STORE NUMBER
             
-            let message = `*Final Order from H.A & Sons Website*%0A%0A`;
+            let message = `*New Order from H.A & Sons Website*%0A%0A`;
+            // Since starting form is removed, we don't force name/phone, 
+            // or we rely on WhatsApp to identify the user.
             message += `*Customer Details:*%0A`;
-            message += `Name: ${userData.name}%0A`;
-            message += `Contact: ${userData.phone}%0A`;
+            message += `(Details to be collected via Chat)%0A`;
             message += `-----------------------%0A`;
             message += `*Order Items:*%0A`;
             
@@ -718,11 +671,7 @@
             });
 
             message += `-----------------------%0A`;
-            if (totalInternalPrice > 5000) {
-                message += `*Status: Eligible for FREE DELIVERY!* (Order Value > 5000)`;
-            } else {
-                message += `*Status: Standard Delivery Charges Apply*`;
-            }
+            message += `*Status:* Awaiting Confirmation`;
 
             window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
         }
